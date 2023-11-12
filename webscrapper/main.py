@@ -9,19 +9,14 @@ def get_page_count(keyword):
 
     base_url = "https://kr.indeed.com/jobs"
     browser.get(f"{base_url}?q={keyword}")
-
     soup = BeautifulSoup(browser.page_source, "html.parser")
-
     pagination = soup.find('nav', class_='css-jbuxu0 ecydgvn0')
-
-    pages = pagination.find_all('div', recursive=False)
-
-    print(pages,type(pages))
-    length = len(pages)
-
-    if length == 0:
+    if pagination == None:
         return 1
-
+    pages = pagination.find_all('div', recursive=False)
+    length = len(pages)
+    if length == None:
+        return 1
     return length
 
 def extract_indeed_jobs(keyword):
@@ -52,3 +47,8 @@ def extract_indeed_jobs(keyword):
             }
             result.append(job_data)
     return result
+print(get_page_count("python"))
+print(get_page_count("next.js"))
+print(get_page_count("django"))
+print(get_page_count("java"))
+print(get_page_count("c#"))
