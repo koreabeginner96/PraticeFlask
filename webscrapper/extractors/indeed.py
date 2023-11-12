@@ -47,9 +47,9 @@ def extract_indeed_jobs(keyword):
                 location = job.find("div", attrs={"data-testid":"text-location"})
                 job_data={
                     'link' : f"https://kr.indeed.com{link}",
-                    'company' : company.string,
-                    'location' : location.string,
-                    'position' : title
+                    'company' : company.string.replac(","," "),
+                    'location' : location.string.replac(","," "),
+                    'position' : title.string.replac(","," "),
                 }
                 result.append(job_data)
     return result
