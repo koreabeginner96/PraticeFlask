@@ -122,3 +122,45 @@
   - **가로 줄**: `<table role="grid">`를 사용하여 테이블에 가로 줄을 추가할 수 있습니다.
   - **가로 스크롤**: `<figure>` 태그 안에 테이블을 넣어 가로 스크롤을 추가할 수 있습니다.
 
+
+### Flask에서 데이터베이스(DB) 만들기
+
+- **DB 생성 위치**:
+  - DB는 함수 밖에서 생성되어야 합니다. 이렇게 하면 서버가 작동하는 동안에만 DB가 유지됩니다.
+
+- **Search 함수에서 DB 사용하기**:
+  - 사용자가 입력한 키워드로 DB를 검색하여 이미 저장된 결과가 있는지 확인합니다.
+  - 만약 DB에 키워드에 해당하는 데이터가 없다면, 새로 데이터를 추출하고 DB에 저장합니다.
+  ```python
+  # DB 생성 (예시)
+  db = {}
+
+  # Search 함수
+  def search_function():
+      keyword = request.args.get("keyword")
+      if keyword in db:
+          jobs = db[keyword]
+      else:
+          indeed_jobs = extract_indeed_jobs(keyword)
+          wwr_jobs = extract_wwr_jobs(keyword)
+          jobs = indeed_jobs + wwr_jobs
+          db[keyword] = jobs
+      return render_template("your_template.html", jobs=jobs)
+      
+### Flask에서 `keyword`가 None일 경우 리디렉트 처리하기
+
+- **Flask에서 `redirect` Import 하기**:
+  - URL 리디렉션을 위해 Flask의 `redirect` 함수를 사용합니다.
+  - `from flask import redirect`로 `redirect`를 임포트합니다.
+
+- **Search 함수에서 None 체크 및 리디렉트**:
+  - `search` 함수 내에서 `keyword`의 값이 `None`인지 확인합니다.
+  - `keyword`가 `None`일 경우, 메인 페이지(`/`)로 리디렉트합니다.
+  ```python
+  from flask import redirect
+
+  def search_function():
+      keyword = request.args.get("keyword")
+      if keyword == None:
+          return redirect("/")
+      # 나머지 로직 처리
