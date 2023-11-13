@@ -22,3 +22,24 @@
   - HTML 폼 가져오기: `!` + 탭 키.
   - 변수 생성: `{{ }}` 중괄호 두 번 안에 변수를 적습니다.
   - form action="/search" serch한 홈페이지로가게 하는 법
+
+  ### Flask에서 URL 키워드 값 사용하기
+
+- **Flask에 `request` Import 하기**:
+  - URL에서 키워드 값을 사용하려면, 먼저 `from flask import request`를 사용하여 `request` 모듈을 임포트해야 합니다.
+
+- **주소에서 파라미터(키워드) 가져오기**:
+  - 키워드 값을 가져오려면, `keyword = request.args.get("keyword")`를 사용합니다.
+  - 이 코드는 URL 쿼리에서 "keyword"라는 이름의 파라미터 값을 가져옵니다.
+
+- **키워드를 화면에 표출하기**:
+  - 메인 함수에서:
+    ```python
+    keyword = request.args.get("keyword")
+    return render_template("search.html", keyword=keyword)
+    ```
+  - `search.html`에서:
+    ```html
+    <h1>Search Result for "{{keyword}}":</h1>
+    ```
+  - 이렇게 하면, `search.html` 페이지에서 "{{keyword}}" 부분에 실제 키워드 값이 표시됩니다.
