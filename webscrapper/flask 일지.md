@@ -77,3 +77,48 @@
   - `{{ }}`: Flask가 변수 값을 HTML에 실제로 렌더링합니다.
   - `{% %}`: Python 코드를 HTML 내에 포함시킬 때 사용합니다.
 
+### Pico CSS 사용하기
+
+- **Pico CSS 설치**:
+  - Pico CSS는 작은 양의 CSS로 웹 페이지를 보기 좋게 만들어줍니다.
+  - 설치를 위해 CDN 링크를 복사한 후 HTML의 `<head>` 부분에 붙여넣습니다.
+
+- **Layout 기초**:
+  - Pico CSS에는 몇 가지 간단한 레이아웃 기술이 있습니다.
+  - **Container**: 요소를 중앙에 배치하려면, `<main class="container">` 안에 내용을 넣습니다.
+    ```html
+    <body>
+      <main class="container">
+        <!-- 내용 -->
+      </main>
+    </body>
+    ```
+
+- **Table 사용**:
+  - 테이블을 사용하여 데이터를 정렬된 형식으로 표시할 수 있습니다.
+    ```html
+    <table>
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Company</th>
+                <th>Location</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ job.position }}</td>
+                <td>{{ job.company }}</td>
+                <!-- 나머지 데이터 표시 -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    ```
+
+- **테이블의 추가 스타일링**:
+  - **가로 줄**: `<table role="grid">`를 사용하여 테이블에 가로 줄을 추가할 수 있습니다.
+  - **가로 스크롤**: `<figure>` 태그 안에 테이블을 넣어 가로 스크롤을 추가할 수 있습니다.
+
