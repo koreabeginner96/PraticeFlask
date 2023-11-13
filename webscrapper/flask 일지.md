@@ -43,3 +43,37 @@
     <h1>Search Result for "{{keyword}}":</h1>
     ```
   - 이렇게 하면, `search.html` 페이지에서 "{{keyword}}" 부분에 실제 키워드 값이 표시됩니다.
+### Flask에서 키워드를 이용한 추출기 활용하기
+
+- **추출기 모듈 Import 하기**:
+  - Indeed와 WWR 추출기를 사용하기 위해 다음과 같이 import 합니다:
+    ```python
+    from extractors.indeed import extract_indeed_jobs
+    from extractors.wwr import extract_wwr_jobs
+    ```
+
+- **키워드를 이용한 추출기 함수 사용**:
+  - URL에서 키워드 값을 가져와 추출기에 사용합니다:
+    ```python
+    keyword = request.args.get("keyword")
+    indeed_jobs = extract_indeed_jobs(keyword)
+    wwr_jobs = extract_wwr_jobs(keyword)
+    jobs = indeed_jobs + wwr_jobs
+    ```
+
+- **결과를 HTML 페이지에 전달**:
+  - `return` 구문에서 `jobs`를 `render_template`에 전달합니다:
+    ```python
+    return render_template("your_template.html", jobs=jobs)
+    ```
+
+- **HTML에서 데이터 사용하기**:
+  - `for` 루프를 사용하여 `jobs` 내의 각 작업을 표시합니다:
+    ```html
+    {% for job in jobs %}
+      <!-- 여기에 각 job을 표시하는 HTML 코드 -->
+    {% endfor %}
+    ```
+  - `{{ }}`: Flask가 변수 값을 HTML에 실제로 렌더링합니다.
+  - `{% %}`: Python 코드를 HTML 내에 포함시킬 때 사용합니다.
+
