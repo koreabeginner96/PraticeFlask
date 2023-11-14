@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request,redirect
+from flask import Flask, render_template, request,redirect,send_file
 from extractors.indeed  import extract_indeed_jobs
 from extractors.wwr import extract_wwr_jobs
+from file import save_to_file
 
 #app = Flask("이름")에서 이름 부분에 공백(space)이 있으면 안된다.
 app = Flask("JobScrapper")
@@ -12,16 +13,26 @@ def home():
 
 @app.route("/search")
 def search():
+    keyword=request.args.get("keyword")
     if keyword == None:
         return redirect("/")
     if keyword in db:
         jobs=db[keyword]
     else:
-        keyword=request.args.get("keyword")
         indeed=extract_indeed_jobs(keyword)
         wwr=extract_wwr_jobs(keyword)
         jobs=indeed+wwr
         db[keyword] = jobs
     return render_template("search.html",keyword=keyword , jobs= jobs)
+
+@app.route("/export")
+def export():
+    keyword=request.args.get("keyword")
+    if keyword == None:
+        return redirect("/")
+    if keyword not in db:
+        return redirect("/search?keyword={keyword}")
+    save_to_file(keyword,db[keyword])
+    return send_file(f"{keyword}.csv", as_attachment=True)
 
 app.run("0.0.0.0")
